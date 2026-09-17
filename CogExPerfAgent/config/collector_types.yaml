@@ -1,0 +1,174 @@
+# =============================================================================
+# Collector Type Configuration
+# =============================================================================
+#
+# This file defines HOW each type of metric is collected.
+#
+# Examples:
+#   kubernetes  -> CPU and memory metrics
+#   transaction -> TPS and response-time metrics
+#   sql         -> SQL/database statistics
+#   kafka       -> Kafka lag and throughput metrics
+#   apm         -> Application performance metrics
+#
+# Entity and component details belong in entities.yaml.
+# Credentials belong in environment variables or .env.
+#
+# A new component using an existing collector type does not require code changes.
+# =============================================================================
+
+
+# Defines how each collector builds its Elasticsearch query.
+# Entity/component values are configured in entities.yaml.
+# Credentials are supplied through environment variables.
+
+collector_types:
+
+  kubernetes:
+    source: "elasticsearch"
+    query_builder: "kubernetes"
+
+    default_index: "metrics-kubernetes.container-default"
+    timestamp_field: "@timestamp"
+    default_interval: "30s"
+    group_size: 100
+
+    # Values shared by components unless overridden in entities.yaml.
+    default_filter_values:
+      stage_name: "staging"
+      geography_name: "us"
+      dataset_name: "kubernetes.container"
+
+    # Elasticsearch field mappings.
+    filter_fields:
+      project_name: "labels.stratosphere-project-name"
+      stage_name: "labels.stratosphere-stage-name"
+      geography_name: "labels.stratosphere-geography-name"
+      dataset_name: "data_stream.dataset"
+      resource_name: "labels.stratosphere-resource-name"
+      container_name: "kubernetes.container.name"
+
+    # These filters are always required.
+    base_filters:
+      - "project_name"
+      - "stage_name"
+      - "geography_name"
+      - "dataset_name"
+
+    # Added only when the component supplies a value.
+    optional_filters:
+      - "resource_name"
+      - "container_name"
+
+    group_by:
+      - "kubernetes.container.name"
+      - "kubernetes.pod.name"
+
+    exclusions:
+      field: "kubernetes.container.name"
+      values:
+        - "istio-proxy"
+        - "auth-proxy"
+        - "istio-init"
+        - "auth"
+
+    metrics:
+      cpu_pct:
+        aggregation: "avg"
+        field: "kubernetes.container.cpu.usage.limit.pct"
+        unit: "percent"
+        scale_factor: 100
+        component_aggregation: "avg"
+
+      cpu_nanocores:
+        aggregation: "avg"
+        field: "kubernetes.container.cpu.usage.nanocores"
+        unit: "nanocores"
+        scale_factor: 1
+        component_aggregation: "sum"
+
+      mem_pct:
+        aggregation: "avg"
+        field: "kubernetes.container.memory.workingset.limit.pct"
+        unit: "percent"
+        scale_factor: 100
+        component_aggregation: "avg"
+
+      mem_bytes:
+        aggregation: "avg"
+        field: "kubernetes.container.memory.workingset.bytes"
+        unit: "bytes"
+        scale_factor: 1
+        component_aggregation: "sum"
+
+  # ---------------------------------------------------------------------------
+  # Transaction metrics
+  # Future: TPS, transaction count, response time and error rate
+  # ---------------------------------------------------------------------------
+
+  # transaction:
+  #   source: elasticsearch
+  #   query_builder: transaction
+  #   default_index: "traces-apm-default"
+  #   timestamp_field: "@timestamp"
+  #   default_interval: "30s"
+  #   group_by:
+  #     - "service.name"
+  #     - "transaction.name"
+  #   filters: {}
+  #   metrics: {}
+
+
+  # ---------------------------------------------------------------------------
+  # SQL/database metrics
+  # Future: execution time, query count, waits and connection statistics
+  # ---------------------------------------------------------------------------
+
+  # sql:
+  #   source: elasticsearch
+  #   query_builder: sql
+  #   default_index: "database-metrics-*"
+  #   timestamp_field: "@timestamp"
+  #   default_interval: "30s"
+  #   group_by:
+  #     - "database.name"
+  #     - "db.statement"
+  #   filters: {}
+  #   metrics: {}
+
+
+  # ---------------------------------------------------------------------------
+  # Kafka metrics
+  # Future: consumer lag, throughput and message-rate statistics
+  # ---------------------------------------------------------------------------
+
+  # kafka:
+  #   source: elasticsearch
+  #   query_builder: kafka
+  #   default_index: "metrics-kafka-*"
+  #   timestamp_field: "@timestamp"
+  #   default_interval: "30s"
+  #   group_by:
+  #     - "kafka.topic.name"
+  #     - "kafka.consumer.group"
+  #   filters: {}
+  #   metrics: {}
+
+
+  # ---------------------------------------------------------------------------
+  # APM/service metrics
+  # Future: service latency, failures, traces and dependency calls
+  # ---------------------------------------------------------------------------
+
+  # apm:
+  #   source: elasticsearch
+  #   query_builder: apm
+  #   default_index: "traces-apm-default"
+  #   timestamp_field: "@timestamp"
+  #   default_interval: "30s"
+  #   group_by:
+  #     - "service.name"
+  #   filters: {}
+  #   metrics: {}
+
+

@@ -1,0 +1,17 @@
+application:
+  name: CogExPerfAgent
+  version: "0.1.0"
+
+elastic:
+  url: "https://stratosphere-us-staging.es.eastus2.azure.elastic-cloud.com"
+  timeout_seconds: 60
+  auth_type: "basic"
+  verify_ssl: true
+
+collection:
+  default_interval: "30s"
+  output_directory: "/tmp/perf-agent/output"
+
+logging:
+  level: "INFO"
+  directory: "logs"

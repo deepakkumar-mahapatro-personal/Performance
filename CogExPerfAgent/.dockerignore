@@ -1,0 +1,11 @@
+.git
+.vscode
+venv
+.env
+__pycache__
+*.pyc
+.pytest_cache
+output
+logs
+tests
+docs

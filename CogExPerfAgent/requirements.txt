@@ -1,0 +1,8 @@
+PyYAML==6.0.2
+python-dotenv==1.0.1
+requests==2.33.0
+pytest==9.0.3
+matplotlib
+fastapi==0.141.1
+uvicorn==0.52.4
+azure-storage-blob==12.30.1

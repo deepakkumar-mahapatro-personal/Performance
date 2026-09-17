@@ -1,0 +1,58 @@
+# Performance validation rules.
+#
+# These rules are evaluated against entity-summary.csv.
+#
+# component_name:
+#   "*" applies the rule to every component.
+#
+# Supported operators:
+#   <=
+#   >=
+#   <
+#   >
+#   ==
+#   !=
+#
+# IMPORTANT:
+# Thresholds below are initial/sample values.
+# Adjust them to the actual performance acceptance criteria.
+
+rule_analyzer:
+  enabled: true
+
+  rules:
+
+    - rule_id: "cpu-p95-limit"
+      description: "CPU p95 should not exceed 80%"
+      enabled: true
+      component_name: "*"
+      metric_name: "CPU Usage (%)"
+      statistic: "p95"
+      operator: "<="
+      threshold: 80
+
+    - rule_id: "memory-p95-limit"
+      description: "Memory p95 should not exceed 85%"
+      enabled: true
+      component_name: "*"
+      metric_name: "Memory Usage (%)"
+      statistic: "p95"
+      operator: "<="
+      threshold: 85
+
+    - rule_id: "cpu-maximum-limit"
+      description: "CPU maximum should not exceed 95%"
+      enabled: true
+      component_name: "*"
+      metric_name: "CPU Usage (%)"
+      statistic: "maximum"
+      operator: "<="
+      threshold: 95
+
+    - rule_id: "minimum-replica-count"
+      description: "Each component should have at least one replica"
+      enabled: true
+      component_name: "*"
+      statistic: "replica_count"
+      operator: ">="
+      threshold: 1

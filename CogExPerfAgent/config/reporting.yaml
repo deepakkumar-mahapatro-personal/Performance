@@ -1,0 +1,121 @@
+# Controls the table, chart and report outputs generated after collection.
+# The metric definitions themselves remain in collector_types.yaml.
+
+reporting:
+
+  tables:
+    json: true
+    csv: true
+    wide_csv: true
+
+  charts:
+    enabled: true
+    format: "png"
+    dpi: 150
+
+    entity_report:
+      enabled: true
+      file_name: "entity-performance-report.png"
+      columns: 2
+      component_width: 8
+      component_height: 4
+
+    component_report:
+      enabled: true
+      file_name: "component-performance-report.png"
+      series_field: "kubernetes.pod.name"
+      width: 14
+      metric_height: 5
+
+    metrics:
+      cpu_pct:
+        enabled: true
+        display_name: "CPU Usage (%)"
+        y_axis_label: "CPU Usage (%)"
+        component_aggregation: "avg"
+
+      mem_pct:
+        enabled: true
+        display_name: "Memory Usage (%)"
+        y_axis_label: "Memory Usage (%)"
+        component_aggregation: "avg"
+
+      cpu_nanocores:
+        enabled: false
+        display_name: "CPU Usage (Nanocores)"
+        y_axis_label: "Nanocores"
+        component_aggregation: "sum"
+
+      mem_bytes:
+        enabled: false
+        display_name: "Memory Usage (Bytes)"
+        y_axis_label: "Bytes"
+        component_aggregation: "sum"
+
+  html_report:
+    enabled: true
+    file_name: "performance-report.html"
+    #title: "CIG_DTS_ITEM Performance Report"
+    include_entity_summary: true
+    include_component_summaries: true
+
+  summaries:
+    enabled: true
+
+    # Only these metrics appear in summary CSV files.
+    # All metrics still remain in normalized JSON and CSV files.
+    metrics:
+      cpu_pct:
+        enabled: true
+        display_name: "CPU Usage (%)"
+        component_aggregation: "avg"
+
+      mem_pct:
+        enabled: true
+        display_name: "Memory Usage (%)"
+        component_aggregation: "avg"
+
+      cpu_nanocores:
+        enabled: false
+        display_name: "CPU Usage (Nanocores)"
+        component_aggregation: "sum"
+
+      mem_bytes:
+        enabled: false
+        display_name: "Memory Usage (Bytes)"
+        component_aggregation: "sum"
+
+    entity_summary:
+      file_name: "entity-summary.csv"
+      columns:
+        - "execution_id"
+        - "entity_name"
+        - "component_name"
+        - "replica_count"
+        - "metric_name"
+        - "average"
+        - "minimum"
+        - "maximum"
+        - "p90"
+        - "p95"
+        - "p99"
+        - "peak_value"
+        - "peak_timestamp"
+
+    pod_summary:
+      file_name: "pod-summary.csv"
+      columns:
+        - "execution_id"
+        - "entity_name"
+        - "component_name"
+        - "kubernetes.container.name"
+        - "kubernetes.pod.name"
+        - "metric_name"
+        - "average"
+        - "minimum"
+        - "maximum"
+        - "p90"
+        - "p95"
+        - "p99"
+        - "peak_value"
+        - "peak_timestamp"

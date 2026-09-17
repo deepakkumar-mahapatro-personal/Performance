@@ -1,0 +1,15 @@
+# Defines business entities and the components involved in each entity.
+
+entities:
+
+  item-CIG_DTS:
+    - beacon-ingress
+    - dts
+    - dp
+    - cis
+
+  orderRelease-CIG_DTS:
+    - beacon-ingress
+    - dts
+    - dp
+    - cis

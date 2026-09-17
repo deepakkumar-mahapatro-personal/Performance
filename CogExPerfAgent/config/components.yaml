@@ -1,0 +1,48 @@
+# Defines reusable component-specific collection configuration.
+# Business entities reference these components from entities.yaml.
+
+components:
+
+  beacon-ingress:
+    display_name: "Beacon Ingress"
+    enabled: true
+    collector_type: "kubernetes"
+    index: "metrics-kubernetes.container-default"
+
+    filters:
+      project_name: "exec-wms-pd04-psr029-us"
+      resource_name: "beacon-ingress-service"
+      container_name: "service"
+
+  dts:
+    display_name: "DTS"
+    enabled: true
+    collector_type: "kubernetes"
+    index: "metrics-kubernetes.container-default"
+
+    filters:
+      project_name: "jdp-datatransform-psr-1"
+      resource_name: "dts"
+      container_name: null
+
+  dp:
+    display_name: "Data Processor"
+    enabled: true
+    collector_type: "kubernetes"
+    index: "metrics-kubernetes.container-default"
+
+    filters:
+      project_name: "jdp-by-psr-eus2-01"
+      resource_name: null
+      container_name: "jdp-data-processor"
+
+  cis:
+    display_name: "CIS"
+    enabled: true
+    collector_type: "kubernetes"
+    index: "metrics-kubernetes.container-default"
+
+    filters:
+      project_name: "prj-jdp-blk-psr-eus2-01"
+      resource_name: "cw-asynchttp-psr-eus2-01"
+      container_name: null
